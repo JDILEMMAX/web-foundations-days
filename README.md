@@ -31,8 +31,8 @@ This repository hosts daily assignments spanning client-side engineering, standa
 | Day | Weekday | Topic | Primary Deliverables | Directory | Status |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Day 1** | Monday | How the Web Works + HTML | Semantic QuickNotes skeleton, About page, forms, tables and accessible navigation | [`day1/`](./day1/) | **Completed (100/100)** |
-| **Day 2** | Tuesday | CSS - Styling & Layout | Modern layout models, Flexbox, Grid, CSS custom properties and responsive UI | `day2/` | Planned |
-| **Day 3** | Wednesday | JavaScript Fundamentals | Core logic, data structures, event loops and Console engine for QuickNotes | `day3/` | Planned |
+| **Day 2** | Tuesday | CSS - Styling & Layout | Modern layout models, Flexbox, Grid, CSS custom properties and responsive UI | [`day2/`](./day2/) | **Completed (100/100)** |
+| **Day 3** | Wednesday | JavaScript Fundamentals | Core logic, data structures, event loops and Console engine for QuickNotes | [`day3/`](./day3/) | In Progress |
 | **Day 4** | Thursday | DOM, Events & Browser Storage | DOM manipulation, state persistence via `localStorage` and UI interaction | `day4/` | Planned |
 | **Day 5** | Monday | Client-Server, HTTP & APIs | Network request lifecycle, RESTful endpoints and asynchronous `fetch()` pipelines | `day5/` | Planned |
 | **Day 6** | Tuesday | Data & Storage | Relational schemas, database normalisation, storage trade-offs and query design | `day6/` | Planned |
@@ -41,51 +41,52 @@ This repository hosts daily assignments spanning client-side engineering, standa
 
 ---
 
-## 3. Day 1 Architecture: Semantic HTML5 & Accessible Navigation
-
-The Day 1 deliverables set up the core structural foundation for the QuickNotes ecosystem across two interlinked pages:
+## 3. Directory Layout Architecture
 
 ```text
-day1/
-├── index.html       # Primary application entry point & semantic note structure
-└── about.html       # Documentation portal, usage guide, keyboard map & feedback form
+web-foundations-days/
+├── .gitignore
+├── LICENSE
+├── README.md
+├── day1/
+│   ├── index.html       # Primary application entry point & semantic note structure
+│   └── about.html       # Product documentation, keyboard matrix & feedback form
+├── day2/
+│   ├── index.html       # Styled QuickNotes application with sticky note cards
+│   ├── about.html       # Styled documentation portal with CSS Grid feature matrix
+│   └── style.css        # Unified stylesheet: Flexbox, CSS Grid, Box Model & Media Queries
+└── day3/
+    ├── index.html       # Host shell with deferred JavaScript execution
+    └── script.js        # Pure logic engine: Note Toolkit algorithms & validation
 ```
-
-### Key Architectural Specifications Implemented:
-* **Strict Semantic Hierarchy:** Built without layout containers, using `<header>`, `<nav>`, `<main>`, `<section>`, `<article>` and `<footer>` elements.
-* **WAI-ARIA Navigation Awareness:** Navigation anchors feature bidirectional relative paths equipped with `aria-current="page"` to provide immediate positional context to screen readers.
-* **Input-Label Binding & Validation:** Native browser-enforced validation with matching `for` and `id` references across text, email and multi-line textarea controls.
-* **Rich Keystroke Semantics:** Standardized `<kbd>` wrappers for operational key sequences (`Enter`, `Tab` and `Ctrl + S`) in compliance with MDN input device markup specifications.
-* **W3C Standards Compliance:** Verified against the W3C Markup Validation Service with zero syntax errors, unclosed tags or invalid nesting.
 
 ---
 
-## 4. Engineering Standards & Repository Governance
+## 4. Module Architecture Summaries
+
+### Day 1: Semantic HTML5 & Accessible Navigation
+* **Strict Semantic Hierarchy:** Built without redundant layout wrappers using `<header>`, `<nav>`, `<main>`, `<section>`, `<article>` and `<footer>` elements.
+* **WAI-ARIA Positional Context:** Bidirectional relative links equipped with `aria-current="page"` to broadcast state to screen readers.
+* **Input-Label Binding & Validation:** Native browser-enforced validation with matching `for` and `id` references across text, email and multi-line textarea controls.
+* **Rich Keystroke Semantics:** Standardized `<kbd>` wrappers for operational key sequences (`Enter`, `Tab` and `Ctrl + S`).
+
+### Day 2: Modern Layout Engines & Responsive UI
+* **Predictable Box Model:** Universal `box-sizing: border-box` reset applied across all elements, pseudo-elements and body defaults.
+* **One-Dimensional Alignment (Flexbox):** Centered navigation bar with dynamic gaps, and a responsive input group where the text box expands via `flex: 1`.
+* **Two-Dimensional Grid Cards (CSS Grid):** Feature cards laid out using `repeat(auto-fit, minmax(180px, 1fr))` for fluid reordering across screen widths without media query bloat.
+* **Micro-Interactions & Elevation:** Smooth `0.2s ease` transitions on buttons, active navigation states and tactile hover lifts (`translateY(-2px)`).
+* **WCAG Focus Visibility:** Dedicated `:focus-visible` styling with dual-pixel outlines and offset buffers to ensure seamless accessibility for keyboard-only operators.
+* **Mobile-First Breakpoint:** Responsive `@media (max-width: 600px)` viewport configuration adjusting header padding, font scale and form stacking.
+
+---
+
+## 5. Engineering Standards & Repository Governance
 
 All code submitted to this repository satisfies the following guidelines:
 1. **Zero-Dependency Vanilla Baseline:** Core web standards (HTML5, modern CSS3 and vanilla ES6+) are prioritized to master underlying browser rendering engines and runtimes before incorporating external abstractions.
 2. **Accessibility-First Design:** Full adherence to WCAG accessibility principles, keyboard focus flows, screen-reader friendliness and accessible color contrast.
 3. **Auditable Git History:** Granular, atomic commits following strict Conventional Commit specifications (`feat:`, `fix:`, `refactor:`, `docs:`, `chore:`).
 4. **Resilient System Architectures:** Engineering decisions are evaluated against latency, fault tolerance, maintainability and real-world scalability.
-
----
-
-## 5. Local Development & Verification
-
-To inspect or serve the daily modules locally:
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/JDILEMMAX/web-foundations-days.git
-   cd web-foundations-days
-   ```
-
-2. Open the project in VS Code:
-   ```bash
-   code .
-   ```
-
-3. Launch any HTML file using the **Live Server** extension (`Go Live` or `Alt + L, Alt + O`) to preview with instant reload.
 
 ---
 
