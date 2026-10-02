@@ -83,26 +83,27 @@ function isDuplicate(text, notesList = notes) {
 }
 
 /**
- * 6. addNote(notesArray, text, category) OR addNote(text, category, notesArray)
- * Polymorphic dependency injection:
- * Operates on an injected array or defaults gracefully to the module collection.
+ * 6. addNote(config)
+ * Configuration Object Pattern:
+ * Accepts a config object: { text, category, targetArray }
+ * Gracefully supports positional fallback: (text, category)
  * Returns true on success, false on validation failure.
  */
-function addNote(first, second, third) {
-  let notesList;
+function addNote(config, categoryFallback) {
   let text;
   let category;
+  let notesList;
 
-  if (Array.isArray(first)) {
-    // Injected dependency pattern: addNote(notesArray, text, category)
-    notesList = first;
-    text = second;
-    category = third;
+  if (typeof config === "object" && config !== null) {
+    // Primary Configuration Object Pattern
+    text = config.text;
+    category = config.category;
+    notesList = Array.isArray(config.targetArray) ? config.targetArray : notes;
   } else {
-    // Default signature pattern: addNote(text, category, [optionalArray])
-    text = first;
-    category = second;
-    notesList = Array.isArray(third) ? third : notes;
+    // Positional fallback for backward compatibility
+    text = config;
+    category = categoryFallback;
+    notesList = notes;
   }
 
   const validCategories = ["personal", "work", "study"];
@@ -202,26 +203,32 @@ console.log(isDuplicate("Configure Nginx reverse proxy"));
 // Expected output: false
 
 
-console.log("=== 6. Testing addNote ===");
-// Normal case: valid note addition to default collection
-console.log(addNote("Review system design trade-offs", "study"));
+console.log("=== 6. Testing addNote (Configuration Object Pattern) ===");
+// Normal case: valid note addition using configuration object
+console.log(addNote({ text: "Review system design trade-offs", category: "study" }));
 // Expected output: Success log, returns true
 
-// Isolation test: injecting an isolated collection (pure function behavior)
+// Isolation test: passing custom targetArray via configuration object
 const isolatedCollection = [];
-console.log(addNote(isolatedCollection, "Isolated task for sandbox", "work"));
+console.log(
+  addNote({
+    text: "Isolated task for sandbox",
+    category: "work",
+    targetArray: isolatedCollection,
+  })
+);
 // Expected output: Success log with ID 1 in isolatedCollection, returns true
 
 // Edge case A: duplicate rejection
-console.log(addNote("Call mum", "personal"));
+console.log(addNote({ text: "Call mum", category: "personal" }));
 // Expected output: Rejection: Duplicate note detected, returns false
 
 // Edge case B: whitespace-only input
-console.log(addNote("    ", "personal"));
+console.log(addNote({ text: "    ", category: "personal" }));
 // Expected output: Rejection: Note length must be between 1 and 200 characters, returns false
 
 // Edge case C: invalid category rejection
-console.log(addNote("Book flight to Nairobi", "travel"));
+console.log(addNote({ text: "Book flight to Nairobi", category: "travel" }));
 // Expected output: Rejection: Invalid category "travel", returns false
 
 console.log("=== Final Notes State ===");
