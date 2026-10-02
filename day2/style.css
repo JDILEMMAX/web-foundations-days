@@ -250,3 +250,18 @@ footer {
     padding: 18px 14px;
   }
 }
+
+/* Accessible Keyboard Focus States (WCAG Compliance) */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #0ba184;
+  outline-offset: 3px;
+}
+
+/* Unified Action Button Alignment across forms */
+#feedback-form button {
+  width: auto;
+  display: inline-block;
+}
