@@ -1,4 +1,19 @@
-/* 1. Global Reset & Box Model */
+/* 1. Design Tokens (CSS Custom Properties) */
+:root {
+  --primary-color: #8e0000;
+  --accent-color: #0ba184;
+  --accent-hover: #088a70;
+  --bg-color: #f4f6f8;
+  --surface-color: #ffffff;
+  --text-main: #222222;
+  --text-muted: #777777;
+  --border-light: #dddddd;
+  --border-input: #cccccc;
+  --note-bg: #fffbe6;
+  --card-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+/* 2. Global Reset & Box Model */
 *,
 *::before,
 *::after {
@@ -8,14 +23,14 @@
 body {
   margin: 0;
   font-family: "Segoe UI", Arial, sans-serif;
-  background-color: #f4f6f8;
-  color: #222222;
+  background-color: var(--bg-color);
+  color: var(--text-main);
   line-height: 1.6;
 }
 
-/* 2. Header & Accessible Navigation */
+/* 3. Header & Accessible Navigation */
 header {
-  background-color: #8e0000;
+  background-color: var(--primary-color);
   color: #ffffff;
   text-align: center;
   padding: 24px 16px;
@@ -57,7 +72,7 @@ nav a[aria-current="page"] {
   box-shadow: inset 0 -2px 0 #ffffff;
 }
 
-/* 3. Main Container & Card Layout */
+/* 4. Main Container & Card Layout */
 main {
   max-width: 680px;
   margin: 28px auto;
@@ -65,20 +80,20 @@ main {
 }
 
 section {
-  background-color: #ffffff;
+  background-color: var(--surface-color);
   padding: 24px;
   border-radius: 10px;
   margin-bottom: 24px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--card-shadow);
 }
 
 h2,
 h3 {
   margin-top: 0;
-  color: #222222;
+  color: var(--text-main);
 }
 
-/* 4. QuickNotes Input Form */
+/* 5. QuickNotes Input Form */
 #note-form {
   display: flex;
   gap: 8px;
@@ -94,7 +109,7 @@ h3 {
 #note-input {
   flex: 1;
   padding: 10px 14px;
-  border: 1px solid #cccccc;
+  border: 1px solid var(--border-input);
   border-radius: 6px;
   font-size: 1rem;
   font-family: inherit;
@@ -102,7 +117,7 @@ h3 {
 
 button,
 input[type="submit"] {
-  background-color: #0ba184;
+  background-color: var(--accent-color);
   color: #ffffff;
   border: none;
   padding: 10px 20px;
@@ -115,11 +130,11 @@ input[type="submit"] {
 
 button:hover,
 input[type="submit"]:hover {
-  background-color: #088a70;
+  background-color: var(--accent-hover);
   transform: translateY(-2px);
 }
 
-/* 5. Notes List */
+/* 6. Notes List */
 #notes-list {
   list-style: none;
   padding: 0;
@@ -127,15 +142,15 @@ input[type="submit"]:hover {
 }
 
 .note {
-  background-color: #fffbe6;
-  border-left: 4px solid #0ba184;
+  background-color: var(--note-bg);
+  border-left: 4px solid var(--accent-color);
   padding: 12px 16px;
   margin-bottom: 12px;
   border-radius: 6px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
-/* 6. Features Grid (Auto-fit Cards) */
+/* 7. Features Grid (Auto-fit Cards) */
 .features {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -154,7 +169,7 @@ input[type="submit"]:hover {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
-/* 7. Keyboard Shortcuts Table & Keycap Semantics */
+/* 8. Keyboard Shortcuts Table & Keycap Semantics */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -163,19 +178,19 @@ table {
 
 th,
 td {
-  border: 1px solid #dddddd;
+  border: 1px solid var(--border-light);
   padding: 10px 14px;
   text-align: left;
 }
 
 th {
-  background-color: #f4f6f8;
+  background-color: var(--bg-color);
   font-weight: 600;
 }
 
 kbd {
   background-color: #eeeeee;
-  border: 1px solid #cccccc;
+  border: 1px solid var(--border-input);
   border-radius: 4px;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
   font-family: monospace;
@@ -184,7 +199,7 @@ kbd {
   display: inline-block;
 }
 
-/* 8. Stacked Feedback Form */
+/* 9. Stacked Feedback Form */
 #feedback-form > div {
   margin-bottom: 16px;
 }
@@ -200,7 +215,7 @@ kbd {
 #feedback-form textarea {
   width: 100%;
   padding: 10px 12px;
-  border: 1px solid #cccccc;
+  border: 1px solid var(--border-input);
   border-radius: 6px;
   font-size: 1rem;
   font-family: inherit;
@@ -210,15 +225,29 @@ kbd {
   resize: vertical;
 }
 
-/* 9. Footer */
+#feedback-form button {
+  width: auto;
+  display: inline-block;
+}
+
+/* 10. Accessible Keyboard Focus States (WCAG Compliance) */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 3px;
+}
+
+/* 11. Footer */
 footer {
   text-align: center;
-  color: #777777;
+  color: var(--text-muted);
   padding: 24px 16px;
   font-size: 0.9rem;
 }
 
-/* 10. Responsive Design for Mobile Devices */
+/* 12. Responsive Design for Mobile Viewports */
 @media (max-width: 600px) {
   header {
     padding: 16px 12px;
@@ -249,19 +278,4 @@ footer {
   section {
     padding: 18px 14px;
   }
-}
-
-/* Accessible Keyboard Focus States (WCAG Compliance) */
-a:focus-visible,
-button:focus-visible,
-input:focus-visible,
-textarea:focus-visible {
-  outline: 2px solid #0ba184;
-  outline-offset: 3px;
-}
-
-/* Unified Action Button Alignment across forms */
-#feedback-form button {
-  width: auto;
-  display: inline-block;
 }
