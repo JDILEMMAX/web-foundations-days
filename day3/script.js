@@ -70,23 +70,41 @@ function getSummary() {
 }
 
 /**
- * 5. isDuplicate(text)
- * Returns true if a note with identical text exists (ignoring case and leading/trailing spaces).
+ * 5. isDuplicate(text, notesList)
+ * Returns true if a note with identical text exists (ignoring case and whitespace).
+ * Accepts an optional target collection to maintain function isolation.
  */
-function isDuplicate(text) {
-  if (typeof text !== "string") {
+function isDuplicate(text, notesList = notes) {
+  if (typeof text !== "string" || !Array.isArray(notesList)) {
     return false;
   }
   const cleaned = text.trim().toLowerCase();
-  return notes.some((note) => note.text.trim().toLowerCase() === cleaned);
+  return notesList.some((note) => note.text.trim().toLowerCase() === cleaned);
 }
 
 /**
- * 6. addNote(text, category)
- * Validates note text (1-200 chars), prevents duplicates, and checks category whitelist.
+ * 6. addNote(notesArray, text, category) OR addNote(text, category, notesArray)
+ * Polymorphic dependency injection:
+ * Operates on an injected array or defaults gracefully to the module collection.
  * Returns true on success, false on validation failure.
  */
-function addNote(text, category) {
+function addNote(first, second, third) {
+  let notesList;
+  let text;
+  let category;
+
+  if (Array.isArray(first)) {
+    // Injected dependency pattern: addNote(notesArray, text, category)
+    notesList = first;
+    text = second;
+    category = third;
+  } else {
+    // Default signature pattern: addNote(text, category, [optionalArray])
+    text = first;
+    category = second;
+    notesList = Array.isArray(third) ? third : notes;
+  }
+
   const validCategories = ["personal", "work", "study"];
 
   if (typeof text !== "string") {
@@ -101,7 +119,7 @@ function addNote(text, category) {
     return false;
   }
 
-  if (isDuplicate(cleanedText)) {
+  if (isDuplicate(cleanedText, notesList)) {
     console.log(`Rejection: Duplicate note detected ("${cleanedText}").`);
     return false;
   }
@@ -111,14 +129,14 @@ function addNote(text, category) {
     return false;
   }
 
-  const nextId = notes.length > 0 ? Math.max(...notes.map((n) => n.id)) + 1 : 1;
+  const nextId = notesList.length > 0 ? Math.max(...notesList.map((n) => n.id)) + 1 : 1;
   const newNote = {
     id: nextId,
     text: cleanedText,
     category: category,
   };
 
-  notes.push(newNote);
+  notesList.push(newNote);
   console.log(`Success: Added note [ID ${newNote.id}] to "${category}".`);
   return true;
 }
@@ -185,9 +203,14 @@ console.log(isDuplicate("Configure Nginx reverse proxy"));
 
 
 console.log("=== 6. Testing addNote ===");
-// Normal case: valid note addition
+// Normal case: valid note addition to default collection
 console.log(addNote("Review system design trade-offs", "study"));
 // Expected output: Success log, returns true
+
+// Isolation test: injecting an isolated collection (pure function behavior)
+const isolatedCollection = [];
+console.log(addNote(isolatedCollection, "Isolated task for sandbox", "work"));
+// Expected output: Success log with ID 1 in isolatedCollection, returns true
 
 // Edge case A: duplicate rejection
 console.log(addNote("Call mum", "personal"));
