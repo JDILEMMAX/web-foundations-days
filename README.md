@@ -30,14 +30,16 @@ This repository hosts daily assignments spanning client-side engineering, standa
 
 | Day | Weekday | Topic | Primary Deliverables | Directory | Status |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Day 1** | Monday | How the Web Works + HTML | Semantic QuickNotes skeleton, About page, forms, tables and accessible navigation | [`day1/`](./day1/) | **Completed (100/100)** |
-| **Day 2** | Tuesday | CSS - Styling & Layout | Modern layout models, Flexbox, Grid, CSS custom properties and responsive UI | [`day2/`](./day2/) | **Completed (100/100)** |
-| **Day 3** | Wednesday | JavaScript Fundamentals | Core logic, data structures, event loops and Console engine for QuickNotes | [`day3/`](./day3/) | In Progress |
-| **Day 4** | Thursday | DOM, Events & Browser Storage | DOM manipulation, state persistence via `localStorage` and UI interaction | `day4/` | Planned |
+| **Day 1** | Monday | How the Web Works + HTML | Semantic QuickNotes skeleton, About page, forms, tables and accessible navigation | [`day1/`](./day1/) | **Completed (98/100)** |
+| **Day 2** | Tuesday | CSS - Styling & Layout | Modern layout models, Flexbox, Grid, CSS custom properties and responsive UI | [`day2/`](./day2/) | **Completed (98/100)** |
+| **Day 3** | Wednesday | JavaScript Fundamentals | Core logic, data structures, event loops and Console engine for QuickNotes | [`day3/`](./day3/) | **Completed (96/100)** |
+| **Day 4** | Thursday | DOM, Events & Browser Storage | DOM manipulation, state persistence via `localStorage` and UI interaction | [`day4/`](./day4/) | **Completed (Submitted)** |
 | **Day 5** | Monday | Client-Server, HTTP & APIs | Network request lifecycle, RESTful endpoints and asynchronous `fetch()` pipelines | `day5/` | Planned |
 | **Day 6** | Tuesday | Data & Storage | Relational schemas, database normalisation, storage trade-offs and query design | `day6/` | Planned |
 | **Day 7** | Wednesday | System Design - Scaling | Architectural blueprinting, caching layers, load balancers and 1M user scale | `day7/` | Planned |
 | **Day 8** | Thursday | Capstone - Design & Present | Comprehensive architecture defense, system metrics and executive presentation | `day8/` | Planned |
+
+> **Major Milestone Project 1:** QuickNotes standalone production application engineered and deployed in repository [`quicknotes-app`](https://github.com/JDILEMMAX/quicknotes-app).
 
 ---
 
@@ -55,9 +57,13 @@ web-foundations-days/
 │   ├── index.html       # Styled QuickNotes application with sticky note cards
 │   ├── about.html       # Styled documentation portal with CSS Grid feature matrix
 │   └── style.css        # Unified stylesheet: Flexbox, CSS Grid, Box Model & Media Queries
-└── day3/
-    ├── index.html       # Host shell with deferred JavaScript execution
-    └── script.js        # Pure logic engine: Note Toolkit algorithms & validation
+├── day3/
+│   ├── index.html       # Host shell with deferred JavaScript execution
+│   └── script.js        # Pure logic engine: Note Toolkit algorithms & validation
+└── day4/
+    ├── index.html       # Accessible editor shell, metrics panel & theme toggle controls
+    ├── style.css        # CSS Custom Properties on :root, dark theme overrides & state badges
+    └── script.js        # Reactive DOM engine, word/char counters & localStorage synchronization
 ```
 
 ---
@@ -71,12 +77,23 @@ web-foundations-days/
 * **Rich Keystroke Semantics:** Standardized `<kbd>` wrappers for operational key sequences (`Enter`, `Tab` and `Ctrl + S`).
 
 ### Day 2: Modern Layout Engines & Responsive UI
-* **Predictable Box Model:** Universal `box-sizing: border-box` reset applied across all elements, pseudo-elements and body defaults.
+* **Design Tokens via CSS Variables:** Centralized color and typography variables defined on `:root` to eliminate magic values and ensure maintainable styling.
 * **One-Dimensional Alignment (Flexbox):** Centered navigation bar with dynamic gaps, and a responsive input group where the text box expands via `flex: 1`.
 * **Two-Dimensional Grid Cards (CSS Grid):** Feature cards laid out using `repeat(auto-fit, minmax(180px, 1fr))` for fluid reordering across screen widths without media query bloat.
-* **Micro-Interactions & Elevation:** Smooth `0.2s ease` transitions on buttons, active navigation states and tactile hover lifts (`translateY(-2px)`).
 * **WCAG Focus Visibility:** Dedicated `:focus-visible` styling with dual-pixel outlines and offset buffers to ensure seamless accessibility for keyboard-only operators.
 * **Mobile-First Breakpoint:** Responsive `@media (max-width: 600px)` viewport configuration adjusting header padding, font scale and form stacking.
+
+### Day 3: JavaScript Fundamentals & Algorithmic Resilience
+* **Configuration Object Pattern:** Function interfaces refactored to accept self-documenting parameter objects (`{ text, category, targetArray }`), eliminating positional argument errors.
+* **Dependency Injection:** Collections passed directly into data transformers to avoid global state mutation and guarantee unit test isolation.
+* **Grammatical Pluralization:** Exact noun agreement handling zero, singular (`1 note`) and plural (`N notes`) states without awkward UI text.
+* **Defensive Boundary Checks:** Multi-tier sanitization enforcing string type guards, whitespace trimming, duplicate rejection and category whitelisting.
+
+### Day 4: DOM Events, Reactive State & Local Persistence
+* **Data-to-UI Render Pattern:** UI updates strictly driven by state mutations, decoupling data transformations from screen manipulation.
+* **XSS Attack Surface Mitigation:** All user-supplied content injected using `textContent` and programmatic node creation (`document.createElement`), completely bypassing unsafe `innerHTML` execution.
+* **Reactive Input Metrics:** Real-time character and word count calculations triggering dynamic threshold classes (`.warning` at 180 characters and `.over` at 200 characters).
+* **Cross-Session Hydration:** State synchronization using serialized `localStorage` transactions, providing seamless draft recovery and theme retention across page refreshes.
 
 ---
 
