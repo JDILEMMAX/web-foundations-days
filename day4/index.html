@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Character Counter &amp; Dark Mode</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <div class="header-content">
+        <h1>Workspace Notes</h1>
+        <button id="theme-toggle" type="button" aria-label="Toggle visual theme">Dark mode</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="editor-card">
+        <h2>Draft Note</h2>
+        <div class="input-group">
+          <label for="note-text">Enter note content (maximum 200 characters):</label>
+          <textarea
+            id="note-text"
+            rows="6"
+            placeholder="Type your thoughts here... (Press Escape or click Clear to reset)"
+          ></textarea>
+        </div>
+
+        <div class="metrics-panel">
+          <p id="char-count" aria-live="polite">0 / 200 characters</p>
+          <p id="word-count" aria-live="polite">0 words</p>
+        </div>
+
+        <div class="action-panel">
+          <button id="clear-btn" type="button">Clear Draft</button>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2026 QuickNotes System. Web Foundations Day 4.</p>
+    </footer>
+  </body>
+</html>

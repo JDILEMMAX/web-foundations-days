@@ -1,0 +1,197 @@
+/* 1. Design Tokens on :root (Light Theme Default) */
+:root {
+  --bg-color: #f4f6f8;
+  --surface-color: #ffffff;
+  --text-primary: #1e293b;
+  --text-muted: #64748b;
+  --header-bg: #8e0000;
+  --header-text: #ffffff;
+  --border-color: #cbd5e1;
+  --accent-color: #0ba184;
+  --accent-hover: #088a70;
+  --danger-color: #e74c3c;
+  --danger-hover: #c0392b;
+  --warning-color: #e67e22;
+  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* 2. Dark Theme Token Overrides */
+body.dark {
+  --bg-color: #0f172a;
+  --surface-color: #1e293b;
+  --text-primary: #f8fafc;
+  --text-muted: #94a3b8;
+  --header-bg: #4a0000;
+  --header-text: #f8fafc;
+  --border-color: #334155;
+  --accent-color: #10b981;
+  --accent-hover: #059669;
+  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+}
+
+/* 3. Global Reset & Box Model */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  line-height: 1.6;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* 4. Header & Theme Toggle */
+header {
+  background-color: var(--header-bg);
+  color: var(--header-text);
+  padding: 16px 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+  max-width: 680px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+#theme-toggle {
+  background-color: transparent;
+  color: var(--header-text);
+  border: 1px solid var(--header-text);
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+#theme-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+/* 5. Main Card Container */
+main {
+  max-width: 680px;
+  margin: 32px auto;
+  padding: 0 16px;
+}
+
+.editor-card {
+  background-color: var(--surface-color);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border-color);
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+.editor-card h2 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 1.25rem;
+}
+
+/* 6. Textarea Input */
+.input-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+
+textarea#note-text {
+  width: 100%;
+  padding: 12px 14px;
+  font-family: inherit;
+  font-size: 1rem;
+  color: var(--text-primary);
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  resize: vertical;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+textarea#note-text:focus-visible {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(11, 161, 132, 0.25);
+}
+
+/* 7. Live Metrics Panel & Dynamic State Classes */
+.metrics-panel {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+#char-count,
+#word-count {
+  margin: 0;
+}
+
+/* State: Warning (181 - 200 characters) */
+#char-count.warning {
+  color: var(--warning-color);
+}
+
+/* State: Over Limit (> 200 characters) */
+#char-count.over {
+  color: var(--danger-color);
+  font-weight: 700;
+}
+
+/* 8. Action Panel */
+.action-panel {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+#clear-btn {
+  background-color: var(--danger-color);
+  color: #ffffff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+#clear-btn:hover {
+  background-color: var(--danger-hover);
+  transform: translateY(-1px);
+}
+
+#clear-btn:focus-visible,
+#theme-toggle:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 3px;
+}
+
+/* 9. Footer */
+footer {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 24px 16px;
+  font-size: 0.9rem;
+}
