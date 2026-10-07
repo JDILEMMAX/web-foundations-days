@@ -33,13 +33,13 @@ This repository hosts daily assignments spanning client-side engineering, standa
 | **Day 1** | Monday | How the Web Works + HTML | Semantic QuickNotes skeleton, About page, forms, tables and accessible navigation | [`day1/`](./day1/) | **Completed (98/100)** |
 | **Day 2** | Tuesday | CSS - Styling & Layout | Modern layout models, Flexbox, Grid, CSS custom properties and responsive UI | [`day2/`](./day2/) | **Completed (98/100)** |
 | **Day 3** | Wednesday | JavaScript Fundamentals | Core logic, data structures, event loops and Console engine for QuickNotes | [`day3/`](./day3/) | **Completed (96/100)** |
-| **Day 4** | Thursday | DOM, Events & Browser Storage | DOM manipulation, state persistence via `localStorage` and UI interaction | [`day4/`](./day4/) | **Completed (Submitted)** |
-| **Day 5** | Monday | Client-Server, HTTP & APIs | Network request lifecycle, RESTful endpoints and asynchronous `fetch()` pipelines | `day5/` | Planned |
+| **Day 4** | Thursday | DOM, Events & Browser Storage | DOM manipulation, state persistence via `localStorage` and UI interaction | [`day4/`](./day4/) | **Completed (98/100)** |
+| **Day 5** | Monday | Client-Server, HTTP & APIs | Network request lifecycle, RESTful endpoints and asynchronous `fetch()` pipelines | [`day5/`](./day5/) | **Completed (98/100)** |
 | **Day 6** | Tuesday | Data & Storage | Relational schemas, database normalisation, storage trade-offs and query design | `day6/` | Planned |
 | **Day 7** | Wednesday | System Design - Scaling | Architectural blueprinting, caching layers, load balancers and 1M user scale | `day7/` | Planned |
 | **Day 8** | Thursday | Capstone - Design & Present | Comprehensive architecture defense, system metrics and executive presentation | `day8/` | Planned |
 
-> **Major Milestone Project 1:** QuickNotes standalone production application engineered and deployed in repository [`quicknotes-app`](https://github.com/JDILEMMAX/quicknotes-app).
+> **Major Milestone Project 1:** QuickNotes standalone production application engineered and deployed in repository [`quicknotes-app`](https://github.com/JDILEMMAX/quicknotes-app) (**Verified Score: 100/100**).
 
 ---
 
@@ -60,10 +60,15 @@ web-foundations-days/
 ├── day3/
 │   ├── index.html       # Host shell with deferred JavaScript execution
 │   └── script.js        # Pure logic engine: Note Toolkit algorithms & validation
-└── day4/
-    ├── index.html       # Accessible editor shell, metrics panel & theme toggle controls
-    ├── style.css        # CSS Custom Properties on :root, dark theme overrides & state badges
-    └── script.js        # Reactive DOM engine, word/char counters & localStorage synchronization
+├── day4/
+│   ├── index.html       # Accessible editor shell, metrics panel & theme toggle controls
+│   ├── style.css        # CSS Custom Properties on :root, dark theme overrides & state badges
+│   └── script.js        # Reactive DOM engine, word/char counters & localStorage synchronization
+└── day5/
+    ├── index.html       # Asynchronous User Directory DOM interface
+    ├── style.css        # Responsive CSS Grid card layout with design tokens
+    ├── users.js         # Fetch pipeline, error states & client-side filtering
+    └── library-api.md   # RFC 7807 RESTful API architecture specification
 ```
 
 ---
@@ -94,6 +99,12 @@ web-foundations-days/
 * **XSS Attack Surface Mitigation:** All user-supplied content injected using `textContent` and programmatic node creation (`document.createElement`), completely bypassing unsafe `innerHTML` execution.
 * **Reactive Input Metrics:** Real-time character and word count calculations triggering dynamic threshold classes (`.warning` at 180 characters and `.over` at 200 characters).
 * **Cross-Session Hydration:** State synchronization using serialized `localStorage` transactions, providing seamless draft recovery and theme retention across page refreshes.
+
+### Day 5: Client-Server Lifecycle, HTTP Protocols & RESTful Architecture
+* **Asynchronous Data Pipelines:** Engineered robust `fetch()` routines with `async / await` and explicit `response.ok` status validation to catch 4xx and 5xx errors.
+* **UI Transit Lifecycle Management:** Enforced single-flight safety by disabling submit controls during transit and using `finally` blocks to guarantee control recovery across network outcomes.
+* **In-Memory Cache & Client Filtering:** Decoupled network calls from view-layer filtering by caching fetched user records, executing case-insensitive lookups with zero redundant requests.
+* **Enterprise REST Resource Design:** Documented a library API specification covering complete CRUD operations, query-parameter author filtering, HTTP status code contracts and RFC 7807 problem details.
 
 ---
 
