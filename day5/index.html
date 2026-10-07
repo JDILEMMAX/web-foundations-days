@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Directory - Asynchronous REST Client</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="users.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <div class="header-container">
+        <div class="brand-group">
+          <h1>User Directory</h1>
+          <span class="role-tag">RESTful Client</span>
+        </div>
+        <p class="tagline">Enterprise Asynchronous Data Pipeline</p>
+      </div>
+    </header>
+
+    <main>
+      <section class="directory-panel" aria-labelledby="controls-heading">
+        <h2 id="controls-heading" class="sr-only">Directory Controls</h2>
+
+        <div class="controls-toolbar">
+          <div class="action-slot">
+            <button id="load-users" type="button">Load Users</button>
+          </div>
+
+          <div class="filter-slot">
+            <label for="filter-input">Filter by name:</label>
+            <input
+              id="filter-input"
+              type="text"
+              placeholder="Filter by name..."
+              autocomplete="off"
+            >
+          </div>
+        </div>
+
+        <div class="feedback-region" aria-live="polite">
+          <p id="status">Click "Load Users" to fetch remote records.</p>
+        </div>
+
+        <ul id="users-list" class="users-grid"></ul>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2026 Jesse Vincent. Web Foundations Day 5.</p>
+    </footer>
+  </body>
+</html>
