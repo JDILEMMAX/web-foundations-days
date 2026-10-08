@@ -35,7 +35,7 @@ This repository hosts daily assignments spanning client-side engineering, standa
 | **Day 3** | Wednesday | JavaScript Fundamentals | Core logic, data structures, event loops and Console engine for QuickNotes | [`day3/`](./day3/) | **Completed (96/100)** |
 | **Day 4** | Thursday | DOM, Events & Browser Storage | DOM manipulation, state persistence via `localStorage` and UI interaction | [`day4/`](./day4/) | **Completed (98/100)** |
 | **Day 5** | Monday | Client-Server, HTTP & APIs | Network request lifecycle, RESTful endpoints and asynchronous `fetch()` pipelines | [`day5/`](./day5/) | **Completed (98/100)** |
-| **Day 6** | Tuesday | Data & Storage | Relational schemas, database normalisation, storage trade-offs and query design | `day6/` | Planned |
+| **Day 6** | Tuesday | Data & Storage | Relational schemas, database normalisation, storage trade-offs and query design | [`day6/`](./day6/) | **Completed (Verified)** |
 | **Day 7** | Wednesday | System Design - Scaling | Architectural blueprinting, caching layers, load balancers and 1M user scale | `day7/` | Planned |
 | **Day 8** | Thursday | Capstone - Design & Present | Comprehensive architecture defense, system metrics and executive presentation | `day8/` | Planned |
 
@@ -64,11 +64,14 @@ web-foundations-days/
 │   ├── index.html       # Accessible editor shell, metrics panel & theme toggle controls
 │   ├── style.css        # CSS Custom Properties on :root, dark theme overrides & state badges
 │   └── script.js        # Reactive DOM engine, word/char counters & localStorage synchronization
-└── day5/
-    ├── index.html       # Asynchronous User Directory DOM interface
-    ├── style.css        # Responsive CSS Grid card layout with design tokens
-    ├── users.js         # Fetch pipeline, error states & client-side filtering
-    └── library-api.md   # RFC 7807 RESTful API architecture specification
+├── day5/
+│   ├── index.html       # Asynchronous User Directory DOM interface
+│   ├── style.css        # Responsive CSS Grid card layout with design tokens
+│   ├── users.js         # Fetch pipeline, error states & client-side filtering
+│   └── library-api.md   # RFC 7807 RESTful API architecture specification
+└── day6/
+    ├── school.sql       # Relational DDL schema, seed records & analytical queries
+    └── school-design.md # 3NF architecture, composite primary keys & SQL vs NoSQL
 ```
 
 ---
@@ -83,7 +86,7 @@ web-foundations-days/
 
 ### Day 2: Modern Layout Engines & Responsive UI
 * **Design Tokens via CSS Variables:** Centralized color and typography variables defined on `:root` to eliminate magic values and ensure maintainable styling.
-* **One-Dimensional Alignment (Flexbox):** Centered navigation bar with dynamic gaps, and a responsive input group where the text box expands via `flex: 1`.
+* **One-Dimensional Alignment (Flexbox):** Centered navigation bar with dynamic gaps and a responsive input group where the text box expands via `flex: 1`.
 * **Two-Dimensional Grid Cards (CSS Grid):** Feature cards laid out using `repeat(auto-fit, minmax(180px, 1fr))` for fluid reordering across screen widths without media query bloat.
 * **WCAG Focus Visibility:** Dedicated `:focus-visible` styling with dual-pixel outlines and offset buffers to ensure seamless accessibility for keyboard-only operators.
 * **Mobile-First Breakpoint:** Responsive `@media (max-width: 600px)` viewport configuration adjusting header padding, font scale and form stacking.
@@ -105,6 +108,13 @@ web-foundations-days/
 * **UI Transit Lifecycle Management:** Enforced single-flight safety by disabling submit controls during transit and using `finally` blocks to guarantee control recovery across network outcomes.
 * **In-Memory Cache & Client Filtering:** Decoupled network calls from view-layer filtering by caching fetched user records, executing case-insensitive lookups with zero redundant requests.
 * **Enterprise REST Resource Design:** Documented a library API specification covering complete CRUD operations, query-parameter author filtering, HTTP status code contracts and RFC 7807 problem details.
+
+### Day 6: Relational Data Architecture, Junction Tables & Storage Systems
+* **Third Normal Form (3NF) Normalization:** Structured separate ledgers for students and courses, isolating attributes to eliminate insertion, update and deletion anomalies.
+* **Junction Entity & Composite Keys:** Modeled the Many-to-Many student-course relationship via an `enrolments` junction table enforcing a composite primary key on `(student_id, course_id)` to eliminate duplicate registrations at the database tier.
+* **Declarative Foreign Key Constraints:** Implemented `ON DELETE CASCADE` triggers on foreign keys to maintain referential integrity without manual cleanup scripts.
+* **B-Tree Indexing Optimization:** Implemented a secondary B-tree index on `enrolments(course_id)` to turn `O(N)` full table scans into `O(log N)` index seeks during reverse join queries and course aggregations.
+* **ACID vs Eventual Consistency Trade-Offs:** Evaluated relational SQL against document-based NoSQL stores, demonstrating why strict ACID guarantees and declarative constraints are necessary for academic enrollment registries.
 
 ---
 
