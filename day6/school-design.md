@@ -48,14 +48,14 @@ The schema partitions the academic domain into three distinct entities structure
 ## 3. Relationship Modeling and Junction Architecture
 
 ```text
-┌────────────────┐             ┌────────────────────────┐             ┌────────────────┐
-│    students    │             │       enrolments       │             │    courses     │
-├────────────────┤             ├────────────────────────┤             ├────────────────┤
-│ id (PK)        │ 1 ────────< ∞ │ student_id (PK, FK1)   │ ∞ >──────── 1 │ id (PK)        │
-│ name           │             │ course_id  (PK, FK2)   │             │ code           │
-│ email (UQ)     │             │ grade                  │             │ title          │
-│ created_at     │             │ enrolled_at            │             │ credits (CHECK)│
-└────────────────┘             └────────────────────────┘             └────────────────┘
+┌──────────────────┐         ┌──────────────────────────┐         ┌──────────────────┐
+│     students     │         │        enrolments        │         │     courses      │
+├──────────────────┤         ├──────────────────────────┤         ├──────────────────┤
+│ id (PK)          │<───┐    │ student_id (PK, FK1)     │    ┌───>│ id (PK)          │
+│ name             │    └───┤ course_id  (PK, FK2)     ├────┘    │ code (UQ)        │
+│ email (UQ)       │         │ grade                    │         │ title            │
+│ created_at       │         │ enrolled_at              │         │ credits (CHECK)  │
+└──────────────────┘         └──────────────────────────┘         └──────────────────┘
 ```
 
 ### 3.1 Many-to-Many Cardinality
@@ -104,19 +104,61 @@ CREATE INDEX idx_enrolments_course_id ON enrolments(course_id);
 
 ## 5. Architectural Trade-Off Analysis: Relational SQL vs NoSQL
 
-For the school management registry domain, a relational SQL engine (such as SQLite or PostgreSQL) was selected over a NoSQL document store (such as MongoDB or CouchDB). The evaluation centers on three critical technical pillars:
+For the school management registry domain, a relational SQL engine (such as SQLite or PostgreSQL) was selected over a NoSQL document store (such as MongoDB or CouchDB). Academic record systems present domain-specific requirements that disqualify eventual consistency and document embedding models.
+
+### 5.1 ACID Transactional Guarantees in Academic Records
+Academic institutional record-keeping requires absolute transactional guarantees during registration periods, grade finalization and transcript audits:
+
+* **Atomicity:** Enrollment is inherently a multi-step operation. Registering a student requires validating course prerequisites, checking classroom seat availability, inserting an entry into `enrolments` and decrementing the course remaining capacity. In SQL, this sequence executes within an atomic boundary:
+
+```sql
+BEGIN TRANSACTION;
+-- 1. Verify seat availability and prerequisite status
+-- 2. Record enrollment
+INSERT INTO enrolments (student_id, course_id) VALUES (4, 1);
+-- 3. Decrement seat capacity
+UPDATE courses SET available_seats = available_seats - 1 WHERE id = 1 AND available_seats > 0;
+COMMIT;
+```
+
+If any validation step fails or the database server crashes mid-flight, the entire transaction rolls back completely. In contrast, document stores lack native multi-document relational atomicity without expensive distributed two-phase commits. In eventual-consistency architectures, a network partition or concurrent request race leads to ghost registrations or oversubscribed classrooms where multiple students receive conflicting confirmations for the last available seat.
+
+* **Consistency:** Relational engines enforce invariants on every write operation. If a transaction attempts to insert a duplicate enrollment, assign a negative credit value or reference a non-existent student, the storage engine rejects the transaction immediately. The database transitions from one valid state to another with zero tolerance for corrupted intermediary states.
+
+* **Isolation:** During peak registration periods, thousands of students register for high-demand courses within seconds. Relational engines support serializable and repeatable read isolation levels with row-level locks, preventing dirty reads, non-repeatable reads and phantom rows.
+
+* **Durability:** Once a student enrollment or final grade commit completes, the data persists to write-ahead logs (`WAL`) on non-volatile storage. Power outages or process terminations cannot discard committed academic achievements.
+
+### 5.2 Engine-Level Referential Integrity and Declarative Schema Enforcement
+In relational database systems, referential integrity is guaranteed by the core storage engine rather than delegated to client software:
+
+* **Declarative Constraints:** Constraints such as `NOT NULL`, `UNIQUE`, `CHECK(credits > 0)` and `FOREIGN KEY ... ON DELETE CASCADE` reside inside the database catalog. Regardless of whether queries originate from a backend API server, a batch migration worker, an administration script or an ad-hoc developer console, the rules apply universally.
+* **Failure Modes in NoSQL:** In document databases, referential integrity is externalized into application-level middleware. If an application service crashes mid-execution, a student document might be deleted while references to that student remain embedded in hundreds of course documents. Over time, these orphaned pointers accumulate, creating data corruption and phantom dependencies that require expensive offline repair scripts to clean up. In SQL, the engine itself enforces cascading purges and constraint validation atomically.
+
+### 5.3 Data Redundancy, Unbounded Document Growth and Write Contention
+Attempting to model school registries within document-oriented NoSQL architectures results in structural anti-patterns:
+
+1. **Embedding Courses inside Student Documents:**
+   * If each student document embeds an array of course objects, updating a course title or schedule requires updating thousands of separate student documents (fan-out write penalty).
+   * As students complete four-year degree programs, graduate studies and certifications, student documents experience unbounded growth, degrading cache efficiency and approaching document size ceilings (such as MongoDB's 16MB document boundary).
+
+2. **Embedding Students inside Course Documents:**
+   * If course documents maintain an array of enrolled students, high-demand courses suffer severe document-level lock contention. When hundreds of students attempt to register for the same course simultaneously, concurrent writes to the same course document result in write conflicts, lock waiting timeouts and degraded throughput.
+
+3. **Normalization in Third Normal Form (3NF):**
+   * Relational SQL solves both dilemmas by isolating entities into independent tables (`students`, `courses`) and managing relationships through a compact junction table (`enrolments`).
+   * Each fact is stored exactly once. Updating a student's legal name or changing a course code requires modifying a single row. The junction table stores lightweight foreign key integer pairs, delivering optimal write concurrency and zero data redundancy.
+
+### 5.4 Architectural Evaluation Matrix: Relational SQL vs NoSQL Document Stores
 
 | Architectural Dimension | Relational SQL (SQLite / PostgreSQL) | NoSQL Document Store (MongoDB) | Academic Domain Verdict |
 | :--- | :--- | :--- | :--- |
-| **ACID Transaction Guarantees** | Native multi-statement atomicity and serializability | Eventual consistency or complex multi-document sessions | **SQL Wins:** Enrollment, grading and capacity checks require absolute transactional consistency. |
-| **Referential Integrity** | Engine-enforced foreign keys and cascading rules | Client application logic must manage dangling references | **SQL Wins:** Database engine guarantees zero orphaned enrollments even if server processes crash. |
-| **Data Redundancy and Normalization** | Strict 3NF normalization; each entity updated once | Embedded documents duplicate student data across courses | **SQL Wins:** Updating a student's legal name or course title occurs in a single row without fan-out inconsistencies. |
-| **Domain Schema Stability** | Rigid schema with type enforcement and check constraints | Flexible, schemaless documents | **SQL Wins:** Academic institutions possess predictable, well-defined operational structures. |
-
-### Domain Evaluation
-Academic registries demand strict consistency over arbitrary horizontal write scaling. An enrollment operation is a transactional boundary: when a student enrolls, the seat allocation must decrement, the relationship record must persist and student prerequisites must validate atomically.
-
-In a document database, embedding courses inside student documents makes querying class rosters expensive and risks exceeding maximum document size limits. Conversely, embedding students inside course documents leads to write contention when dozens of students register concurrently for the same class. Relational SQL guarantees normalized storage, engine-level referential checks (`FOREIGN KEY`) and data integrity constraints (`CHECK`, `UNIQUE`, `NOT NULL`) that make it the superior architecture for academic registries.
+| **ACID Transaction Guarantees** | Native multi-statement atomicity, serializable isolation and WAL durability | Eventual consistency or high-latency multi-document distributed transactions | **SQL Wins:** Course registration, tuition billing and grade updates require strict consistency. |
+| **Referential Integrity** | Engine-enforced foreign keys with automatic cascading deletions | Manual application logic; vulnerable to orphaned records upon server crash | **SQL Wins:** Zero orphaned enrollments guaranteed at the storage engine tier. |
+| **Schema Enforcement** | Strict DDL types, column nullability and declarative CHECK expressions | Schema-optional or advisory validation; inconsistent formats across document versions | **SQL Wins:** Institutional curriculum structures possess rigid, well-defined standards. |
+| **Write Concurrency and Contention** | Fine-grained row-level locking on compact junction table records | Document-level locks on shared course records cause severe registration write bottlenecks | **SQL Wins:** Independent junction inserts scale smoothly across concurrent applicants. |
+| **Data Redundancy** | Third Normal Form (3NF); entity updates execute in a single row | Denormalized embedded objects create data duplication and update anomalies | **SQL Wins:** Eliminates fan-out updates when course catalogs or student profiles change. |
+| **Ad-Hoc Analytical Querying** | Powerful SQL joins, aggregations (`GROUP BY`, `COUNT`) and window functions | Aggregation pipelines require complex multi-stage lookups and denormalized scans | **SQL Wins:** Generating transcripts, GPA rankings and accreditation audits is straightforward. |
 
 ---
 
