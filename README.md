@@ -35,11 +35,13 @@ This repository hosts daily assignments spanning client-side engineering, standa
 | **Day 3** | Wednesday | JavaScript Fundamentals | Core logic, data structures, event loops and Console engine for QuickNotes | [`day3/`](./day3/) | **Completed (96/100)** |
 | **Day 4** | Thursday | DOM, Events & Browser Storage | DOM manipulation, state persistence via `localStorage` and UI interaction | [`day4/`](./day4/) | **Completed (98/100)** |
 | **Day 5** | Monday | Client-Server, HTTP & APIs | Network request lifecycle, RESTful endpoints and asynchronous `fetch()` pipelines | [`day5/`](./day5/) | **Completed (98/100)** |
-| **Day 6** | Tuesday | Data & Storage | Relational schemas, database normalisation, storage trade-offs and query design | [`day6/`](./day6/) | **Completed (93/100)** |
-| **Day 7** | Wednesday | System Design - Scaling | Architectural blueprinting, caching layers, load balancers and 1M user scale | [`day7/`](./day7/) | **Completed (Submitted)** |
+| **Day 6** | Tuesday | Data & Storage | Relational schemas, database normalisation, storage trade-offs and query design | [`day6/`](./day6/) | **Completed (70/100)** |
+| **Day 7** | Wednesday | System Design - Scaling | Architectural blueprinting, caching layers, load balancers and 1M user scale | [`day7/`](./day7/) | **Completed (70/100)** |
 | **Day 8** | Thursday | Capstone - Design & Present | Comprehensive architecture defense, system metrics and executive presentation | `day8/` | Planned |
 
 > **Major Milestone Project 1:** QuickNotes standalone production application engineered and deployed in repository [`quicknotes-app`](https://github.com/JDILEMMAX/quicknotes-app) (**Verified Score: 100/100**).
+>
+> **Major Milestone Project 2:** QuickNotes distributed system design and API client engineered in repository [`quicknotes-system-design`](https://github.com/JDILEMMAX/quicknotes-system-design) (**Verified Score: 96/100**).
 
 ---
 
