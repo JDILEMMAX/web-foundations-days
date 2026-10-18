@@ -35,8 +35,8 @@ This repository hosts daily assignments spanning client-side engineering, standa
 | **Day 3** | Wednesday | JavaScript Fundamentals | Core logic, data structures, event loops and Console engine for QuickNotes | [`day3/`](./day3/) | **Completed (96/100)** |
 | **Day 4** | Thursday | DOM, Events & Browser Storage | DOM manipulation, state persistence via `localStorage` and UI interaction | [`day4/`](./day4/) | **Completed (98/100)** |
 | **Day 5** | Monday | Client-Server, HTTP & APIs | Network request lifecycle, RESTful endpoints and asynchronous `fetch()` pipelines | [`day5/`](./day5/) | **Completed (98/100)** |
-| **Day 6** | Tuesday | Data & Storage | Relational schemas, database normalisation, storage trade-offs and query design | [`day6/`](./day6/) | **Completed (Verified)** |
-| **Day 7** | Wednesday | System Design - Scaling | Architectural blueprinting, caching layers, load balancers and 1M user scale | `day7/` | Planned |
+| **Day 6** | Tuesday | Data & Storage | Relational schemas, database normalisation, storage trade-offs and query design | [`day6/`](./day6/) | **Completed (93/100)** |
+| **Day 7** | Wednesday | System Design - Scaling | Architectural blueprinting, caching layers, load balancers and 1M user scale | [`day7/`](./day7/) | **Completed (Submitted)** |
 | **Day 8** | Thursday | Capstone - Design & Present | Comprehensive architecture defense, system metrics and executive presentation | `day8/` | Planned |
 
 > **Major Milestone Project 1:** QuickNotes standalone production application engineered and deployed in repository [`quicknotes-app`](https://github.com/JDILEMMAX/quicknotes-app) (**Verified Score: 100/100**).
@@ -69,9 +69,11 @@ web-foundations-days/
 │   ├── style.css        # Responsive CSS Grid card layout with design tokens
 │   ├── users.js         # Fetch pipeline, error states & client-side filtering
 │   └── library-api.md   # RFC 7807 RESTful API architecture specification
-└── day6/
-    ├── school.sql       # Relational DDL schema, seed records & analytical queries
-    └── school-design.md # 3NF architecture, composite primary keys & SQL vs NoSQL
+├── day6/
+│   ├── school.sql       # Relational DDL schema, seed records & analytical queries
+│   └── school-design.md # 3NF architecture, composite primary keys & SQL vs NoSQL
+└── day7/
+    └── photo-app-scaling.md # SnapShare capacity planning, architecture diagram & trade-offs
 ```
 
 ---
@@ -115,6 +117,13 @@ web-foundations-days/
 * **Declarative Foreign Key Constraints:** Implemented `ON DELETE CASCADE` triggers on foreign keys to maintain referential integrity without manual cleanup scripts.
 * **B-Tree Indexing Optimization:** Implemented a secondary B-tree index on `enrolments(course_id)` to turn `O(N)` full table scans into `O(log N)` index seeks during reverse join queries and course aggregations.
 * **ACID vs Eventual Consistency Trade-Offs:** Evaluated relational SQL against document-based NoSQL stores, demonstrating why strict ACID guarantees and declarative constraints are necessary for academic enrollment registries.
+
+### Day 7: System Design - Scaling and Production Architecture
+* **Capacity Planning at Scale:** Derived average and peak throughput for 1M DAU: 10 uploads/s average (50/s peak) and 500 feed reads/s average (2,500/s peak) using the 1 day ≈ 100,000 seconds approximation with a 5x peak multiplier.
+* **Read-Heavy Classification:** Established the 50:1 read-to-write ratio that makes Redis caching the primary performance lever, routing the majority of read traffic away from the database tier entirely.
+* **Object Storage Offloading:** Demonstrated why storing 2 MB binary photo BLOBs in a relational database degrades B-tree indexes, saturates replication bandwidth and exhausts connection pools - justifying delegation to distributed object storage (AWS S3) with lightweight metadata references in SQL.
+* **Asynchronous Thumbnail Workers:** Decoupled CPU-bound image resizing from the user-facing upload path using a message queue (SQS) and a dedicated worker fleet, keeping API response latency independent of thumbnail generation throughput.
+* **SPOF Mitigation:** Identified and mitigated single points of failure across every layer: redundant load balancers, primary-replica database failover, Redis Sentinel cluster and durable at-least-once queue delivery.
 
 ---
 
