@@ -37,7 +37,7 @@ This repository hosts daily assignments spanning client-side engineering, standa
 | **Day 5** | Monday | Client-Server, HTTP & APIs | Network request lifecycle, RESTful endpoints and asynchronous `fetch()` pipelines | [`day5/`](./day5/) | **Completed (98/100)** |
 | **Day 6** | Tuesday | Data & Storage | Relational schemas, database normalisation, storage trade-offs and query design | [`day6/`](./day6/) | **Completed (70/100)** |
 | **Day 7** | Wednesday | System Design - Scaling | Architectural blueprinting, caching layers, load balancers and 1M user scale | [`day7/`](./day7/) | **Completed (70/100)** |
-| **Day 8** | Thursday | Capstone - Design & Present | Comprehensive architecture defense, system metrics and executive presentation | [`day8/`](./day8/) | **Completed (Submitted)** |
+| **Day 8** | Thursday | Capstone - Design & Present | Comprehensive architecture defense, system metrics and executive presentation | [`day8/`](./day8/) | **Completed (78/100)** |
 
 > **Major Milestone Project 1:** QuickNotes standalone production application engineered and deployed in repository [`quicknotes-app`](https://github.com/JDILEMMAX/quicknotes-app) (**Verified Score: 100/100**).
 >
