@@ -37,7 +37,7 @@ This repository hosts daily assignments spanning client-side engineering, standa
 | **Day 5** | Monday | Client-Server, HTTP & APIs | Network request lifecycle, RESTful endpoints and asynchronous `fetch()` pipelines | [`day5/`](./day5/) | **Completed (98/100)** |
 | **Day 6** | Tuesday | Data & Storage | Relational schemas, database normalisation, storage trade-offs and query design | [`day6/`](./day6/) | **Completed (70/100)** |
 | **Day 7** | Wednesday | System Design - Scaling | Architectural blueprinting, caching layers, load balancers and 1M user scale | [`day7/`](./day7/) | **Completed (70/100)** |
-| **Day 8** | Thursday | Capstone - Design & Present | Comprehensive architecture defense, system metrics and executive presentation | `day8/` | Planned |
+| **Day 8** | Thursday | Capstone - Design & Present | Comprehensive architecture defense, system metrics and executive presentation | [`day8/`](./day8/) | **Completed (Submitted)** |
 
 > **Major Milestone Project 1:** QuickNotes standalone production application engineered and deployed in repository [`quicknotes-app`](https://github.com/JDILEMMAX/quicknotes-app) (**Verified Score: 100/100**).
 >
@@ -74,8 +74,11 @@ web-foundations-days/
 ├── day6/
 │   ├── school.sql       # Relational DDL schema, seed records & analytical queries
 │   └── school-design.md # 3NF architecture, composite primary keys & SQL vs NoSQL
-└── day7/
-    └── photo-app-scaling.md # SnapShare capacity planning, architecture diagram & trade-offs
+├── day7/
+│   └── photo-app-scaling.md # SnapShare capacity planning, architecture diagram & trade-offs
+└── day8/
+    ├── ticketing-design.md  # TicketHub distributed architecture, 3NF schema & double-booking engine
+    └── reflection.md        # Capstone engineering reflection, telemetry review & next horizons
 ```
 
 ---
@@ -126,6 +129,13 @@ web-foundations-days/
 * **Object Storage Offloading:** Demonstrated why storing 2 MB binary photo BLOBs in a relational database degrades B-tree indexes, saturates replication bandwidth and exhausts connection pools - justifying delegation to distributed object storage (AWS S3) with lightweight metadata references in SQL.
 * **Asynchronous Thumbnail Workers:** Decoupled CPU-bound image resizing from the user-facing upload path using a message queue (SQS) and a dedicated worker fleet, keeping API response latency independent of thumbnail generation throughput.
 * **SPOF Mitigation:** Identified and mitigated single points of failure across every layer: redundant load balancers, primary-replica database failover, Redis Sentinel cluster and durable at-least-once queue delivery.
+
+### Day 8: Capstone System Design, Flash-Sale Concurrency & Course Reflection
+* **Six-Step Architectural Framework:** Executed a disciplined design methodology for TicketHub spanning requirement clarification, capacity estimation, REST API contracts, 3NF relational schemas, distributed component mapping and trade-off analysis.
+* **Flash-Crowd Surge Estimation:** Modeled severe traffic asymmetry during a marquee event sale where 200,000 concurrent buyers compete for 20,000 seats in 10 minutes, driving reads from 5 to 20,000 requests/s (4,000x surge) and checkouts from 0.05 to 1,000 writes/s (20,000x surge).
+* **Two-Tier Double-Booking Prevention Engine:** Guaranteed strict transactional serializability through an upstream in-memory Redis distributed lock (`SET seat:{id}:hold {user_id} NX EX 600`) absorbing 99% of competing claims in under 2 ms, coupled with atomic SQL row-level transactions (`UPDATE seats ... WHERE status = 'AVAILABLE'`).
+* **Admission Control and Gatekeeping:** Deployed a virtual waiting room token-bucket queue at the Cloudflare edge layer to regulate incoming traffic bursts, protecting downstream load balancers and database connection pools from cascading failure.
+* **Course Completion & Engineering Reflection:** Synthesized foundational milestones across client-side state isolation, REST API contracts, relational normalisation and distributed scalability while outlining future learning horizons in Go/Rust microservices and Kafka event streaming.
 
 ---
 
